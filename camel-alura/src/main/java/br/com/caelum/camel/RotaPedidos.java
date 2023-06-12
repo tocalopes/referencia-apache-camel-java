@@ -15,9 +15,11 @@ public class RotaPedidos {
 			public void configure() throws Exception {
 				//file(tipo de arquivo). :pedido nome arquivo | ?delay = observa a cada 5 segundos
 				from("file:pedidos?delay=5s&noop=true")
-						.log("${id}")
+						.split()
+							.xpath("/pedido/itens/item")
+							.log("${body}")
 						.filter()
-							.xpath("/pedido/itens/item/formato[text()='EBOOK']")
+							.xpath("/item/formato[text()='EBOOK']")
 						//marshal transforma tipos de dados
 						.marshal()
 							.xmljson()
