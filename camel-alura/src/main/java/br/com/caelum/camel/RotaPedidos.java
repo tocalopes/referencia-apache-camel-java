@@ -14,7 +14,11 @@ public class RotaPedidos {
 			@Override
 			public void configure() throws Exception {
 				//file(tipo de arquivo). :pedido nome arquivo | ?delay = observa a cada 5 segundos
-				from("file:pedidos?delay=5s")
+				from("file:pedidos?delay=5s&noop=true")
+						.log("${id}")
+						//marshal transforma tipos de dados
+						.marshal().xmljson()
+						.log("${body}")
 						.to("file:saida");
 			}
 		});
