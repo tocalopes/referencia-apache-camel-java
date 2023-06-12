@@ -19,6 +19,7 @@ public class RotaPedidos {
 						//marshal transforma tipos de dados
 						.marshal().xmljson()
 						.log("${body}")
+						.setHeader("CamelFileName", simple("${file:name.noext}.json"))
 						.to("file:saida");
 			}
 		});
