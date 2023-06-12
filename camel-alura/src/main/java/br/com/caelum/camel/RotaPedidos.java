@@ -16,8 +16,11 @@ public class RotaPedidos {
 				//file(tipo de arquivo). :pedido nome arquivo | ?delay = observa a cada 5 segundos
 				from("file:pedidos?delay=5s&noop=true")
 						.log("${id}")
+						.filter()
+							.xpath("/pedido/itens/item/formato[text()='EBOOK']")
 						//marshal transforma tipos de dados
-						.marshal().xmljson()
+						.marshal()
+							.xmljson()
 						.log("${body}")
 						.setHeader("CamelFileName", simple("${file:name.noext}.json"))
 						.to("file:saida");
