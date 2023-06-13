@@ -1,6 +1,7 @@
 package br.com.caelum.camel;
 
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
 import org.apache.camel.RoutesBuilder;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.impl.DefaultCamelContext;
@@ -24,7 +25,8 @@ public class RotaPedidos {
 						.marshal()
 							.xmljson()
 						.log("${body}")
-						.setHeader("CamelFileName", simple("${file:name.noext}.json"))
+						//.setHeader("CamelFileName", simple("${file:name.noext}.json"))
+						.setHeader(Exchange.FILE_NAME, simple("${file:name.noext}-${header.CamelSplitIndex}.json"))
 						.to("file:saida");
 			}
 		});
